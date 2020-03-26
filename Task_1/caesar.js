@@ -3,7 +3,6 @@ const cod = require('./coddingCeasar');
 class Caesar extends Transform {
   constructor(_mapCod, action, _shift) {
     super();
-    console.log('action', action);
     this.mapCod = _mapCod;
     if (action !== 'encode') {
       this.shift = -_shift;
@@ -12,7 +11,6 @@ class Caesar extends Transform {
     }
   }
   _transform(chunk, enc, done) {
-    console.log('this.shift', this.shift);
     const out = chunk
       .toString()
       .split('')
@@ -26,5 +24,4 @@ class Caesar extends Transform {
     done();
   }
 }
-
 module.exports = Caesar;

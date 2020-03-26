@@ -1,5 +1,4 @@
 exports.code = function caesarShift(str, amount) {
-  console.log(amount);
   if (amount < 0) return caesarShift(str, amount + 26);
   let output = '';
   for (let i = 0; i < str.length; i++) {
@@ -14,7 +13,5 @@ exports.code = function caesarShift(str, amount) {
     }
     output += c;
   }
-
-  // All done!
   return output;
 };

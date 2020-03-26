@@ -42,4 +42,13 @@ if (program.output === undefined) {
   streamOutput = fs.createWriteStream(program.output, 'utf-8');
 }
 
-streamInput.pipe(caesarStream).pipe(streamOutput);
+// streamInput.pipe(caesarStream).pipe(streamOutput);
+
+const { pipeline } = require('stream');
+pipeline(streamInput, caesarStream, streamOutput, err => {
+  if (err) {
+    console.error('Pipeline failed.', err);
+  } else {
+    console.log('Pipeline succeeded.');
+  }
+});
