@@ -9,6 +9,7 @@ program
   .option('-a, --action <type>', 'an action encode/decode');
 
 program.parse(process.argv);
+console.log(program.opts());
 
 if (program.action === undefined) {
   throw new Error('action bad!');
@@ -17,18 +18,28 @@ if (program.action === undefined) {
 if (program.shift === undefined) {
   throw new Error('shift bad!');
 }
-
-let readStream;
-
 const mapCod = require('./mapCod');
 const Caesar = require('./caesar');
+let streamInput;
+let streamOutput;
 
-const caesarStream = new Caesar(mapCod.mapCod(program.shift, program.action));
+const caesarStream = new Caesar(
+  mapCod.mapCod(program.shift, program.action),
+  program.action,
+  +program.shift
+);
 
 if (program.input === undefined) {
   process.stdin.setEncoding('utf8');
-  process.stdin.pipe(caesarStream).pipe(process.stdout);
+  streamInput = process.stdin;
 } else {
-  readStream = fs.createReadStream(program.input, 'utf-8');
-  readStream.pipe(caesarStream).pipe(process.stdout);
+  streamInput = fs.createReadStream(program.input, 'utf-8');
 }
+
+if (program.output === undefined) {
+  streamOutput = process.stdout;
+} else {
+  streamOutput = fs.createWriteStream(program.output, 'utf-8');
+}
+
+streamInput.pipe(caesarStream).pipe(streamOutput);
