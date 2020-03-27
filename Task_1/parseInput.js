@@ -1,10 +1,12 @@
 const { program } = require('commander');
+const path = require('path');
 module.exports.pars = () => {
   program
     .option('-s, --shift <type>', 'a shift')
     .option('-i, --input <type>', 'an input file')
     .option('-o, --output <type>', 'an output file')
     .option('-a, --action <action>', 'an action encode/decode');
+
   program.parse(process.argv);
   if (program.action !== 'encode' && program.action !== 'decode') {
     console.error('only -a --action = encode or decode');
@@ -32,6 +34,8 @@ module.exports.pars = () => {
     console.log(stat.mode);
     return stat;
   });*/
+  program.input = path.resolve(__dirname, program.input);
+  program.output = path.resolve(__dirname, program.output);
 
   return program;
 };
