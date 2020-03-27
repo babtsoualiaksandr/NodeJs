@@ -1,25 +1,12 @@
-const { program } = require('commander');
-
+const pr = require('./parseInput');
 const fs = require('fs');
-
-program
-  .option('-s, --shift <type>', 'a shift')
-  .option('-i, --input <type>', 'an input file')
-  .option('-o, --output <type>', 'an output file')
-  .option('-a, --action <type>', 'an action encode/decode');
-
-program.parse(process.argv);
-console.log(program.opts());
-
-if (program.action === undefined) {
-  throw new Error('action bad!');
-}
-
-if (program.shift === undefined) {
-  throw new Error('shift bad!');
-}
+const { pipeline } = require('stream');
 const mapCod = require('./mapCod');
 const Caesar = require('./caesar');
+
+const program = pr.pars();
+console.log(program.opts());
+
 let streamInput;
 let streamOutput;
 
@@ -39,12 +26,9 @@ if (program.input === undefined) {
 if (program.output === undefined) {
   streamOutput = process.stdout;
 } else {
-  streamOutput = fs.createWriteStream(program.output, 'utf-8');
+  streamOutput = fs.createWriteStream(program.output, { flags: 'a' });
 }
 
-// streamInput.pipe(caesarStream).pipe(streamOutput);
-
-const { pipeline } = require('stream');
 pipeline(streamInput, caesarStream, streamOutput, err => {
   if (err) {
     console.error('Pipeline failed.', err);
