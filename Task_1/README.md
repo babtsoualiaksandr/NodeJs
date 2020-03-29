@@ -10,6 +10,8 @@
 ### $ node my_caesar_cli --action encode --shift 7 --input plain.txt --output encoded.txt
 ### $ node my_caesar_cli --action decode --shift 7 --input decoded.txt --output plain.txt
 
+# ctrl+ d окончание ввоа с консоли
+
 
 - [x] корне репозитория создана папка с произвольным названием (например caesar-cipher-cli, task1 и т.п.), в которой расположены файлы с кодом программы
 
