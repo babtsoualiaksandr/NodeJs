@@ -183,9 +183,10 @@ describe('Boards suite', () => {
         .then(response => expect(response.status).oneOf([200, 204]));
 
       await Promise.all(
-        boardTaskIds.map(async taskId =>
-          request.get(routes.tasks.getById(boardId, taskId)).expect(404)
-        )
+        boardTaskIds.map(async taskId => {
+          console.log(taskId);
+          return request.get(routes.tasks.getById(boardId, taskId)).expect(404);
+        })
       );
     });
   });

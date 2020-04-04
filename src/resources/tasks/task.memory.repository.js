@@ -2,7 +2,7 @@
 let tasks = require('./mock').tasks;
 const Task = require('./task.model');
 const getAll = async boardId => {
-  console.log('tasks !!!!!!!!!!!!!!!repo!!!!!!!!!!!!!!', tasks);
+  console.log('taskkkkkkkkkkkkkkkkkkkkkk', tasks);
   return tasks.filter(item => item.boardId === boardId);
 };
 
@@ -11,8 +11,6 @@ const getTaskId = async (boardId, taskId) => {
 };
 
 const addTask = async (boardId, task) => {
-  console.log('--------------------repo------------------------');
-  console.log('create TASK', boardId, 'task = ', task);
   const newTask = new Task({ ...task, boardId });
   tasks.push(newTask);
   return newTask;
@@ -33,8 +31,27 @@ const editTask = async (boardId, taskId, task) => {
 };
 
 const deleteTask = async id => {
-  tasks = tasks.filter(user => user.id !== id);
+  tasks = tasks.filter(task => task.id !== id);
   return 'Deleted';
 };
 
-module.exports = { getAll, getTaskId, addTask, editTask, deleteTask };
+const deleteTaskByBoard = async boardId => {
+  tasks = tasks.filter(task => task.boardId !== boardId);
+  return 'Deleted';
+};
+
+const nullTaskByUser = async userId => {
+  tasks.map(task => {
+    if (task.userId !== userId) task.userId = null;
+  });
+};
+
+module.exports = {
+  getAll,
+  getTaskId,
+  addTask,
+  editTask,
+  deleteTask,
+  deleteTaskByBoard,
+  nullTaskByUser
+};

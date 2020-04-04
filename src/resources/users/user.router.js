@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
-// const ExpressData = require('./../../common/express-data');
 
 router.route('/').get(async (req, res) => {
   const users = await usersService.getAll();
@@ -17,13 +16,11 @@ router.route('/:id').get(async (req, res) => {
 });
 
 router.route('/:id').put(async (req, res) => {
-  console.log('id router', req.params.id);
   const user = await usersService.editUser(req.params.id, req.body);
   return res.status(200).json(user);
 });
 
 router.route('/').post(async (req, res) => {
-  console.log(req.body);
   const user = await usersService.addUser(req.body);
   return res.status(200).json(User.toResponse(user));
 });

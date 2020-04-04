@@ -1,7 +1,8 @@
 // const User = require('./user.model');
 let users = require('./mock').users;
-const tasks = require('../tasks/mock').tasks;
+const tasksService = require('../tasks/task.service');
 const User = require('./user.model');
+
 const getAll = async () => {
   return users;
 };
@@ -17,8 +18,6 @@ const addUser = async user => {
 };
 
 const editUser = async (id, user) => {
-  console.log('id', id);
-  console.log('user', user);
   users.map(item => {
     if (item.id === id) {
       item.name = user.name;
@@ -32,12 +31,8 @@ const editUser = async (id, user) => {
 
 const deleteUser = async id => {
   users = users.filter(user => user.id !== id);
-  tasks.map(task => {
-    if (task.userId === id) task.userId = null;
-    return task;
-  });
-  console.log('---------------------------', tasks.length);
-  return 'Deleted';
+  tasksService.nullTaskByUser(id);
+  return null;
 };
 
 module.exports = { getAll, getUserId, addUser, editUser, deleteUser };
