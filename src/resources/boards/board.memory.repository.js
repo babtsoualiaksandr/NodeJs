@@ -47,7 +47,6 @@ const editBoard = async (id, board) => {
 const deleteBoard = async id => {
   boards = boards.filter(board => board.id !== id);
   tasksService.deleteTaskByBoard(id);
-  console.log(boards);
   return 'Deleted';
 };
 

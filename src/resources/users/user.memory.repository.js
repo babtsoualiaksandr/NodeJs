@@ -31,7 +31,7 @@ const editUser = async (id, user) => {
 
 const deleteUser = async id => {
   users = users.filter(user => user.id !== id);
-  tasksService.nullTaskByUser(id);
+  await tasksService.nullTaskByUser(id);
   return null;
 };
 

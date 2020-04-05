@@ -2,7 +2,6 @@
 let tasks = require('./mock').tasks;
 const Task = require('./task.model');
 const getAll = async boardId => {
-  console.log('taskkkkkkkkkkkkkkkkkkkkkk', tasks);
   return tasks.filter(item => item.boardId === boardId);
 };
 
@@ -41,8 +40,11 @@ const deleteTaskByBoard = async boardId => {
 };
 
 const nullTaskByUser = async userId => {
-  tasks.map(task => {
-    if (task.userId !== userId) task.userId = null;
+  tasks = tasks.map(task => {
+    if (task.userId === userId) {
+      task.userId = null;
+    }
+    return task;
   });
 };
 

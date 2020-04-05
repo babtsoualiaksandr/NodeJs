@@ -184,7 +184,6 @@ describe('Boards suite', () => {
 
       await Promise.all(
         boardTaskIds.map(async taskId => {
-          console.log(taskId);
           return request.get(routes.tasks.getById(boardId, taskId)).expect(404);
         })
       );

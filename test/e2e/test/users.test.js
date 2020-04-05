@@ -70,7 +70,6 @@ describe('Users suite', () => {
         .expect(200)
         .expect('Content-Type', /json/)
         .then(res => {
-          console.log(res.body);
           expect(res.body.id).to.be.a('string');
           expect(res.body).to.not.have.property('password');
           jestExpect(res.body).toMatchObject({

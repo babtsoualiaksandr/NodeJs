@@ -10,10 +10,8 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/:id').get(async (req, res) => {
-  console.log('get id board', req.params.id);
   const board = await boardsService.getBoardId(req.params.id);
   if (!board) {
-    console.log('not found id board', req.params.id);
     return res.status(404).json({ message: 'Board not found' });
   }
   return res.status(200).json(board);
