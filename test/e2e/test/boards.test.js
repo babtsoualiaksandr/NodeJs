@@ -67,6 +67,8 @@ describe('Boards suite', () => {
 
   describe('POST', () => {
     it('should create board successfully', async () => {
+      let boardId;
+
       await request
         .post(routes.boards.create)
         .set('Accept', 'application/json')
@@ -74,9 +76,13 @@ describe('Boards suite', () => {
         .expect(200)
         .expect('Content-Type', /json/)
         .then(res => {
+          boardId = res.body.id;
           expect(res.body.id).to.be.a('string');
           jestExpect(res.body).toMatchObject(TEST_BOARD_DATA);
         });
+
+      // Teardown
+      await request.delete(routes.boards.delete(boardId));
     });
   });
 
@@ -183,9 +189,9 @@ describe('Boards suite', () => {
         .then(response => expect(response.status).oneOf([200, 204]));
 
       await Promise.all(
-        boardTaskIds.map(async taskId => {
-          return request.get(routes.tasks.getById(boardId, taskId)).expect(404);
-        })
+        boardTaskIds.map(async taskId =>
+          request.get(routes.tasks.getById(boardId, taskId)).expect(404)
+        )
       );
     });
   });
