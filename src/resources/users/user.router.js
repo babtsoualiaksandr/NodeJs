@@ -11,10 +11,13 @@ router.route('/').get(
 );
 
 router.route('/:id').get(
-  catchErrors(async (req, res) => {
+  catchErrors(async (req, res, next) => {
     const user = await usersService.getUserId(req.params.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      const error = new Error('User Not found');
+      error.statusCode = 404;
+      next(error);
+      return;
     }
     return res.status(200).json(User.toResponse(user));
   })
