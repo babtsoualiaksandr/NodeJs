@@ -2,6 +2,8 @@ const router = require('express').Router();
 const User = require('./user.model');
 const usersService = require('./user.service');
 const catchErrors = require('../../common/catchErrors');
+const createError = require('http-errors');
+const validator = require('validator');
 
 router.route('/').get(
   catchErrors(async (req, res) => {
@@ -11,13 +13,13 @@ router.route('/').get(
 );
 
 router.route('/:id').get(
-  catchErrors(async (req, res, next) => {
+  catchErrors(async (req, res) => {
+    if (!validator.isUUID(req.params.id)) {
+      throw createError(400, `User ID'${req.params.id}' not UUID`);
+    }
     const user = await usersService.getUserId(req.params.id);
     if (!user) {
-      const error = new Error('User Not found');
-      error.statusCode = 404;
-      next(error);
-      return;
+      throw createError(404, `User '${req.params.id}' not found`);
     }
     return res.status(200).json(User.toResponse(user));
   })
@@ -25,9 +27,12 @@ router.route('/:id').get(
 
 router.route('/:id').put(
   catchErrors(async (req, res) => {
+    if (!validator.isUUID(req.params.id)) {
+      throw createError(400, `User ID'${req.params.id}' not UUID`);
+    }
     const isUser = await usersService.getUserId(req.params.id);
     if (!isUser) {
-      return res.status(404).json({ message: 'User not found' });
+      throw createError(404, `User '${req.params.id}' not found`);
     }
     const user = await usersService.editUser(req.params.id, req.body);
     return res.status(200).json(user);
@@ -43,6 +48,9 @@ router.route('/').post(
 
 router.route('/:id').delete(
   catchErrors(async (req, res) => {
+    if (!validator.isUUID(req.params.id)) {
+      throw createError(400, `User ID'${req.params.id}' not UUID`);
+    }
     const message = await usersService.deleteUser(req.params.id);
 
     return res.status(204).json({ message });

@@ -17,7 +17,6 @@ let boards = [
   }
 ];
 
-const tasksService = require('../tasks/task.service');
 const Board = require('./board.model');
 const getAll = async () => {
   return boards;
@@ -46,7 +45,6 @@ const editBoard = async (id, board) => {
 
 const deleteBoard = async id => {
   boards = boards.filter(board => board.id !== id);
-  tasksService.deleteTaskByBoard(id);
   return 'Deleted';
 };
 

@@ -1,6 +1,5 @@
 // const User = require('./user.model');
 let users = require('./mock').users;
-const tasksService = require('../tasks/task.service');
 const User = require('./user.model');
 
 const getAll = async () => {
@@ -31,7 +30,6 @@ const editUser = async (id, user) => {
 
 const deleteUser = async id => {
   users = users.filter(user => user.id !== id);
-  await tasksService.nullTaskByUser(id);
   return null;
 };
 

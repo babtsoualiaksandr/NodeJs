@@ -1,9 +1,8 @@
 const router = require('express').Router();
 const taskRouter = require('../tasks/task.router.js');
-// const Board = require('./board.model');
 const boardsService = require('./board.service');
-// const ExpressData = require('./../../common/express-data');
 const catchErrors = require('../../common/catchErrors');
+const createError = require('http-errors');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
@@ -14,7 +13,7 @@ router.route('/:id').get(
   catchErrors(async (req, res) => {
     const board = await boardsService.getBoardId(req.params.id);
     if (!board) {
-      return res.status(404).json({ message: 'Board not found' });
+      throw createError(404, `Board '${req.params.id}' not found`);
     }
     return res.status(200).json(board);
   })
@@ -23,6 +22,9 @@ router.route('/:id').get(
 router.route('/:id').put(
   catchErrors(async (req, res) => {
     const board = await boardsService.editBoard(req.params.id, req.body);
+    if (!board) {
+      throw createError(404, `Board '${req.params.id}' not found`);
+    }
     return res.status(200).json(board);
   })
 );
