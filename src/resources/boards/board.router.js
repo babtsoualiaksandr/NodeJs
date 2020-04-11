@@ -3,6 +3,7 @@ const taskRouter = require('../tasks/task.router.js');
 const boardsService = require('./board.service');
 const catchErrors = require('../../common/catchErrors');
 const createError = require('http-errors');
+const { boardValidationBody, validate } = require('../../common/validator');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
@@ -20,6 +21,8 @@ router.route('/:id').get(
 );
 
 router.route('/:id').put(
+  boardValidationBody(),
+  validate,
   catchErrors(async (req, res) => {
     const board = await boardsService.editBoard(req.params.id, req.body);
     if (!board) {

@@ -24,6 +24,7 @@ app.use('/', (req, res, next) => {
     res.send('Service is running!');
     return;
   }
+
   next();
 });
 

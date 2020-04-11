@@ -3,7 +3,11 @@ const User = require('./user.model');
 const usersService = require('./user.service');
 const catchErrors = require('../../common/catchErrors');
 const createError = require('http-errors');
-const validator = require('validator');
+const {
+  userValidationBody,
+  ValidationIdUuid,
+  validate
+} = require('../../common/validator');
 
 router.route('/').get(
   catchErrors(async (req, res) => {
@@ -13,10 +17,9 @@ router.route('/').get(
 );
 
 router.route('/:id').get(
+  ValidationIdUuid(),
+  validate,
   catchErrors(async (req, res) => {
-    if (!validator.isUUID(req.params.id)) {
-      throw createError(400, `User ID'${req.params.id}' not UUID`);
-    }
     const user = await usersService.getUserId(req.params.id);
     if (!user) {
       throw createError(404, `User '${req.params.id}' not found`);
@@ -26,10 +29,10 @@ router.route('/:id').get(
 );
 
 router.route('/:id').put(
+  ValidationIdUuid(),
+  userValidationBody(),
+  validate,
   catchErrors(async (req, res) => {
-    if (!validator.isUUID(req.params.id)) {
-      throw createError(400, `User ID'${req.params.id}' not UUID`);
-    }
     const isUser = await usersService.getUserId(req.params.id);
     if (!isUser) {
       throw createError(404, `User '${req.params.id}' not found`);
@@ -40,6 +43,8 @@ router.route('/:id').put(
 );
 
 router.route('/').post(
+  userValidationBody(),
+  validate,
   catchErrors(async (req, res) => {
     const user = await usersService.addUser(req.body);
     return res.status(200).json(User.toResponse(user));
@@ -47,10 +52,9 @@ router.route('/').post(
 );
 
 router.route('/:id').delete(
+  ValidationIdUuid(),
+  validate,
   catchErrors(async (req, res) => {
-    if (!validator.isUUID(req.params.id)) {
-      throw createError(400, `User ID'${req.params.id}' not UUID`);
-    }
     const message = await usersService.deleteUser(req.params.id);
 
     return res.status(204).json({ message });
