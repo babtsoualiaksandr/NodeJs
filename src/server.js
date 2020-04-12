@@ -6,7 +6,7 @@ const logger = require('./common/logger');
 app.listen(PORT, () =>
   logger.log('info', `App is running on http://localhost:${PORT}`)
 );
-
+// TODO: для проверки unhandledRejection uncaughtException
 /* setTimeout(() => {
   Promise.reject(new Error('Promise Oops!'));
 }, 1500);
