@@ -6,6 +6,24 @@ const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const logger = require('./common/logger');
 const createError = require('http-errors');
+const passport = require('passport');
+const Strategy = require('passport-http-bearer').Strategy;
+const findByToken = require('./resources/users/user.service');
+
+passport.use(
+  new Strategy((token, cb) => {
+    console.log(token);
+    findByToken(token, (err, user) => {
+      if (err) {
+        return cb(err);
+      }
+      if (!user) {
+        return cb(null, false);
+      }
+      return cb(null, user);
+    });
+  })
+);
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -29,7 +47,11 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/users', userRouter);
-app.use('/boards', boardRouter);
+app.use(
+  '/boards',
+  passport.authenticate('bearer', { session: false }),
+  boardRouter
+);
 app.use((req, res, next) => {
   next(createError(404, `Not found url: ${req.url}`));
 });
