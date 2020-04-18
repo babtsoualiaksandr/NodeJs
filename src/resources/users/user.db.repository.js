@@ -23,4 +23,8 @@ const deleteUser = async userId => {
   return User.deleteOne({ _id: userId });
 };
 
-module.exports = { getAll, getUserId, addUser, editUser, deleteUser };
+const isUser = async (_login, _password) => {
+  return User.findOne({ login: _login, password: _password });
+};
+
+module.exports = { getAll, getUserId, addUser, editUser, deleteUser, isUser };

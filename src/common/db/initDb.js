@@ -4,12 +4,12 @@ const Task = require('../../resources/tasks/task.model');
 const mongoose = require('mongoose');
 const users = [
   new User({
-    name: 'User 0',
-    login: 'Login 0',
-    password: '1q2w3e4r'
+    name: 'User0',
+    login: 'admin',
+    password: 'admin'
   }),
   new User({
-    name: 'User 1',
+    name: 'User1',
     login: 'Login 323',
     password: '1q2w3e4r'
   })
