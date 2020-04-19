@@ -3,11 +3,11 @@ const taskRouter = require('../tasks/task.router.js');
 const boardsService = require('./board.service');
 const catchErrors = require('../../common/catchErrors');
 const createError = require('http-errors');
-const { boardValidationBody, validate } = require('../../common/validator');
+const Board = require('./board.model');
 
 router.route('/').get(async (req, res) => {
   const boards = await boardsService.getAll();
-  return res.status(200).json(boards);
+  return res.status(200).json(boards.map(Board.toResponse));
 });
 
 router.route('/:id').get(
@@ -16,13 +16,11 @@ router.route('/:id').get(
     if (!board) {
       throw createError(404, `Board '${req.params.id}' not found`);
     }
-    return res.status(200).json(board);
+    return res.status(200).json(Board.toResponse(board));
   })
 );
 
 router.route('/:id').put(
-  boardValidationBody(),
-  validate,
   catchErrors(async (req, res) => {
     const board = await boardsService.editBoard(req.params.id, req.body);
     if (!board) {
@@ -35,7 +33,7 @@ router.route('/:id').put(
 router.route('/').post(
   catchErrors(async (req, res) => {
     const board = await boardsService.addBoard(req.body);
-    return res.status(200).json(board);
+    return res.status(200).json(Board.toResponse(board));
   })
 );
 

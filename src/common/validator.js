@@ -4,7 +4,15 @@ const userValidationBody = () => {
     check('name', 'not exists').exists(),
     check('login', 'not exists').exists(),
     check('password', 'not exists').exists(),
-    check('password', 'not length 8').isLength({ min: 8, max: 20 })
+    check('password', 'not length 8').isLength({ min: 1, max: 20 })
+  ];
+};
+
+const userValidationLogin = () => {
+  return [
+    check('login', 'not exists').exists(),
+    check('password', 'not exists').exists(),
+    check('password', 'not length 8').isLength({ min: 1, max: 20 })
   ];
 };
 
@@ -36,5 +44,6 @@ module.exports = {
   userValidationBody,
   boardValidationBody,
   ValidationIdUuid,
+  userValidationLogin,
   validate
 };

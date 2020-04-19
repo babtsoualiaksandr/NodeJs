@@ -56,7 +56,6 @@ router.route('/:id').delete(
   validate,
   catchErrors(async (req, res) => {
     const message = await usersService.deleteUser(req.params.id);
-
     return res.status(204).json({ message });
   })
 );

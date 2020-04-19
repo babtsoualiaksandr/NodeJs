@@ -198,7 +198,6 @@ describe('Users suite', () => {
           .set('Accept', 'application/json')
           .expect(200)
           .expect('Content-Type', /json/);
-
         expect(newTaskResponse.body).to.be.instanceOf(Object);
         expect(newTaskResponse.body.userId).to.equal(null);
       }
