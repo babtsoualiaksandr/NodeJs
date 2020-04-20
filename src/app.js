@@ -7,7 +7,7 @@ const boardRouter = require('./resources/boards/board.router');
 const loginRouter = require('./resources/login/login.router');
 const logger = require('./common/logger');
 const createError = require('http-errors');
-const verify = require('./resources/login/valid-token');
+// const verify = require('./resources/login/valid-token');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -30,8 +30,8 @@ app.use('/', (req, res, next) => {
   next();
 });
 app.use('/login', loginRouter);
-app.use('/users', verify, userRouter);
-app.use('/boards', verify, boardRouter);
+app.use('/users', userRouter);
+app.use('/boards', boardRouter);
 app.use((req, res, next) => {
   next(createError(404, `Not found url: ${req.url}`));
 });
