@@ -1,22 +1,28 @@
 const router = require('express').Router();
-const loginService = require('../login/login.service');
 const catchErrors = require('../../common/catchErrors');
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET_KEY = require('../../common/config').JWT_SECRET_KEY;
-const { userValidationLogin, validate } = require('../../common/validator');
+const config = require('../../common/config');
+const loginServices = require('../login/login.service');
 
 router.route('/').post(
-  userValidationLogin(),
-  validate,
   catchErrors(async (req, res) => {
-    const isUser = await loginService.isUser(req.body.login, req.body.password);
-    console.log(req.body);
-    if (!isUser) {
-      throw createError(404, `User '${JSON.stringify(req.body)}' not found`);
+    const user = await loginServices.isUser(req.body.login);
+    if (!user) {
+      throw createError(403, `User '${JSON.stringify(req.body)}' Forbidden `);
     }
-    const _token = jwt.sign({ login: isUser.login }, JWT_SECRET_KEY);
-    return res.header('Authorization', _token).send({ token: _token });
+    user.comparePassword(req.body.password, (error, match) => {
+      if (!match) {
+        return res.status(403).send({ message: 'Forbidden' });
+      }
+    });
+    const _token = jwt.sign(
+      { login: user.login, userId: user._id },
+      config.JWT_SECRET_KEY
+    );
+    return res
+      .header(config.HTTP_HEADER_Authorization, _token)
+      .send({ token: _token });
   })
 );
 

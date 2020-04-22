@@ -5,6 +5,7 @@ const getAll = () => usersRepo.getAll();
 const getUserId = id => usersRepo.getUserId(id);
 const addUser = user => usersRepo.addUser(user);
 const editUser = (id, user) => usersRepo.editUser(id, user);
+const findOneByLogin = login => usersRepo.findOneByLogin(login);
 const deleteUser = async id => {
   await usersRepo.deleteUser(id);
   await tasksService.nullTaskByUser(id);
@@ -15,5 +16,6 @@ module.exports = {
   getUserId,
   addUser,
   editUser,
-  deleteUser
+  deleteUser,
+  findOneByLogin
 };
