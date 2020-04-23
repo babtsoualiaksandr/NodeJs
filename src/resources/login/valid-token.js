@@ -14,7 +14,7 @@ const verify = (req, res, next) => {
     );
     req.user = verified;
   } catch (error) {
-    throw createError(400, 'Invalid Token');
+    throw createError(400, `Invalid Token!!! ${error}`);
   }
   next();
 };

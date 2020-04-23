@@ -19,7 +19,9 @@ const addUser = async user => {
 };
 
 const editUser = async (userId, user) => {
-  return User.updateOne({ _id: userId }, user);
+  return User.findOneAndUpdate({ _id: userId }, user, {
+    new: true
+  });
 };
 
 const deleteUser = async userId => {
