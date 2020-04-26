@@ -1,4 +1,4 @@
-// const User = require('./user.model');
+// eslint-disable-next-line node/no-missing-require
 let users = require('./mock').users;
 const User = require('./user.model');
 

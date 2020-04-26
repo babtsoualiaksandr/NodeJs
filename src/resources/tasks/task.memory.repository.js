@@ -1,4 +1,4 @@
-// const User = require('./user.model');
+// eslint-disable-next-line node/no-missing-require
 let tasks = require('./mock').tasks;
 const Task = require('./task.model');
 const getAll = async boardId => {

@@ -1,4 +1,3 @@
-// const User = require('./user.model');
 const User = require('./user.model');
 
 const getAll = async () => {
@@ -11,12 +10,18 @@ const getUserId = async userId => {
   return User.findOne({ _id: userId });
 };
 
+const findOneByLogin = async _login => {
+  return User.findOne({ login: _login });
+};
+
 const addUser = async user => {
   return User.create(user);
 };
 
 const editUser = async (userId, user) => {
-  return User.updateOne({ _id: userId }, user);
+  return User.findOneAndUpdate({ _id: userId }, user, {
+    new: true
+  });
 };
 
 const deleteUser = async userId => {
@@ -27,4 +32,12 @@ const isUser = async (_login, _password) => {
   return User.findOne({ login: _login, password: _password });
 };
 
-module.exports = { getAll, getUserId, addUser, editUser, deleteUser, isUser };
+module.exports = {
+  getAll,
+  getUserId,
+  addUser,
+  editUser,
+  deleteUser,
+  isUser,
+  findOneByLogin
+};

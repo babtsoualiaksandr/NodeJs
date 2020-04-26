@@ -1,10 +1,8 @@
-/* eslint-disable no-process-exit */
-/* eslint-disable no-unused-vars */
 const { PORT, MONGO_CONNECTION_STRING } = require('./common/config');
 const app = require('./app');
 const logger = require('./common/logger');
 const mongoose = require('mongoose');
-const cathErrors = require('./common/catchErrors');
+
 const initDb = require('./common/db/initDb');
 async function start() {
   const url = MONGO_CONNECTION_STRING;
@@ -20,31 +18,24 @@ async function start() {
       'info',
       `database connected! url ${mongoose.connection.host} nameBD: ${mongoose.connection.name} port: ${mongoose.connection.port}`
     );
+    initDb();
   } catch (err) {
     logger.log('error', `database Not connected! ${err}`);
   }
 }
 start();
 
-initDb();
-
-// TODO: для проверки unhandledRejection uncaughtException
-/* setTimeout(() => {
-  Promise.reject(new Error('Promise Oops!'));
-}, 1500);
-
-setTimeout(() => {
-  throw new Error('Oops!');
-}, 2500); */
-
+// eslint-disable-next-line no-unused-vars
 process.on('unhandledRejection', (reason, promise) => {
-  logger.log('error', `@@@@ Unhandled rejection detected: ${reason.message}`);
+  logger.log('error', `Unhandled rejection detected: ${reason.message}`);
 });
 
+// eslint-disable-next-line no-unused-vars
 process.on('uncaughtException', (error, origin) => {
   logger.log(
     'error',
-    `##uncaughtExceptionMonitor rejection detected: ${error.message}`
+    `uncaughtExceptionMonitor rejection detected: ${error.message}`
   );
+  // eslint-disable-next-line no-process-exit
   process.exit(1);
 });

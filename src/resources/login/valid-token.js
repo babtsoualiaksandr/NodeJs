@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET_KEY = require('../../common/config').JWT_SECRET_KEY;
+const config = require('../../common/config');
 const createError = require('http-errors');
 
 const verify = (req, res, next) => {
@@ -8,10 +8,13 @@ const verify = (req, res, next) => {
     throw createError(401, 'Access Denied');
   }
   try {
-    const verified = jwt.verify(token.slice(7), JWT_SECRET_KEY);
+    const verified = jwt.verify(
+      token.replace(config.Authorization_Schema, '').replace(' ', ''),
+      config.JWT_SECRET_KEY
+    );
     req.user = verified;
   } catch (error) {
-    throw createError(400, 'Invalid Token');
+    throw createError(400, `Invalid Token!!! ${error}`);
   }
   next();
 };

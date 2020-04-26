@@ -4,13 +4,13 @@ const Task = require('../../resources/tasks/task.model');
 const mongoose = require('mongoose');
 const users = [
   new User({
-    name: 'User0',
+    name: 'User One Admin for Test',
     login: 'admin',
     password: 'admin'
   }),
   new User({
-    name: 'User1',
-    login: 'Login 323',
+    name: 'User two not Admin',
+    login: 'Login',
     password: '1q2w3e4r'
   })
 ];
@@ -37,9 +37,9 @@ const tasks = [
     title: 'title',
     order: 1,
     description: '',
-    userId: 'jhghghj', // assignee
+    userId: 'userId', // assignee
     boardId: '1',
-    columnId: 'jhgjhgjhgjh'
+    columnId: 'columnId'
   }),
   new Task({
     title: 'title',
@@ -47,15 +47,15 @@ const tasks = [
     description: '',
     userId: 'a092f06e-da82-47c7-87cf-affdab31f3c0', // assignee
     boardId: '1',
-    columnId: 'jhgjhgjhgjh'
+    columnId: 'colomnId'
   }),
   new Task({
-    title: 'title fhgffh fgf',
+    title: 'title Task',
     order: 3,
-    description: 'qwerthjhgfjvgb hhg',
+    description: 'description Task',
     userId: 'a092f06e-da82-47c7-87cf-affdab31f3c0', // assignee
-    boardId: 'jggjhg hgj ghgjhg',
-    columnId: 'jhgjhgjhgjh'
+    boardId: 'board Id',
+    columnId: 'column Id'
   })
 ];
 
